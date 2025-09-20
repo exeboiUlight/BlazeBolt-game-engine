@@ -1,8 +1,7 @@
-// Переключение темы
+
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
-// Проверяем сохранённую тему
 const savedTheme = localStorage.getItem('preferredTheme');
 if (savedTheme === 'light') {
     body.classList.remove('dark-theme');
@@ -33,7 +32,6 @@ function updateThemeButtonText() {
         `☀️ <span data-i18n="theme.light">${themeText}</span>`;
 }
 
-// Плавная прокрутка
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
