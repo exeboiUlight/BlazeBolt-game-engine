@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор сцен с множеством объектов</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            padding: 25px;
+            gap: 25px;
+        }
+        
+        .editor-panel {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .preview-panel {
+            flex: 2;
+            background: #ecf0f1;
+            padding: 25px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .panel-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            color: #2c3e50;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus, input[type="text"]:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .vector-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-add {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-add:hover {
+            background: #219653;
+            transform: translateY(-2px);
+        }
+        
+        .btn-update {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-update:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset {
+            background: #e67e22;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+        
+        .btn-download {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .btn-download:hover {
+            background: #8e44ad;
+            transform: translateY(-2px);
+        }
+        
+        .preview-content {
+            flex: 1;
+            background: #2c3e50;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .scene-object {
+            position: absolute;
+            background: #3498db;
+            border: 2px solid #2980b9;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        
+        .scene-object.selected {
+            border: 3px solid #f1c40f;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+        
+        .objects-list {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        
+        .object-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .object-item:hover {
+            background: #e9ecef;
+        }
+        
+        .object-item.selected {
+            background: #3498db;
+            color: white;
+        }
+        
+        .data-preview {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .byte-data {
+            margin-top: 10px;
+            word-break: break-all;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .file-name {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+        
+        .icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        
+        .object-type {
+            margin-top: 15px;
+        }
+        
+        .object-color {
+            width: 100%;
+            height: 40px;
+            border-radius: 4px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>BlazeBolt scene editor</h1>
+        </header>
+        
+        <div class="main-content">
+            <div class="editor-panel">
+                <h2 class="panel-title">Управление объектами</h2>
+                
+                <div class="form-group">
+                    <label>Выберите объект</label>
+                    <select id="objectSelector">
+                        <option value="-1">Новый объект</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Имя объекта</label>
+                    <input type="text" id="objectName" value="Объект">
+                </div>
+                
+                <div class="form-group">
+                    <label>Тип объекта</label>
+                    <select id="objectType">
+                        <option value="cube">Куб</option>
+                        <option value="sphere">Сфера</option>
+                        <option value="cylinder">Цилиндр</option>
+                        <option value="pyramid">Пирамида</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Цвет объекта</label>
+                    <input type="color" id="objectColor" value="#3498db" class="object-color">
+                </div>
+                
+                <div class="form-group">
+                    <label>Позиция (X, Y, Z) - по 4 байта каждое</label>
+                    <div class="vector-inputs">
+                        <input type="number" id="posX" value="0" step="0.1" placeholder="X">
+                        <input type="number" id="posY" value="0" step="0.1" placeholder="Y">
+                        <input type="number" id="posZ" value="0" step="0.1" placeholder="Z">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Масштаб (X, Y, Z) - по 4 байта каждое</label>
+                    <div class="vector-inputs">
+                        <input type="number" id="scaleX" value="1" step="0.1" placeholder="X">
+                        <input type="number" id="scaleY" value="1" step="0.1" placeholder="Y">
+                        <input type="number" id="scaleZ" value="1" step="0.1" placeholder="Z">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Вращение (X, Y, Z) - по 4 байта каждое</label>
+                    <div class="vector-inputs">
+                        <input type="number" id="rotateX" value="0" step="1" placeholder="X">
+                        <input type="number" id="rotateY" value="0" step="1" placeholder="Y">
+                        <input type="number" id="rotateZ" value="0" step="1" placeholder="Z">
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn-add" onclick="addObject()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        Добавить
+                    </button>
+                    <button class="btn-update" onclick="updateObject()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        Обновить
+                    </button>
+                    <button class="btn-delete" onclick="deleteObject()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        Удалить
+                    </button>
+                    <button class="btn-reset" onclick="resetScene()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                        Сбросить сцену
+                    </button>
+                    <button class="btn-download" onclick="downloadBinary()">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        Скачать бинарник
+                    </button>
+                </div>
+                
+                <div class="objects-list" id="objectsList">
+                    <div class="object-item" style="text-align: center; cursor: default;">Объекты не добавлены</div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <h2 class="panel-title">Предпросмотр сцены</h2>
+                
+                <div class="preview-content" id="sceneContainer">
+                    <div class="scene-object" id="defaultObject">Добавьте объекты на сцену</div>
+                </div>
+                
+                <div class="data-preview">
+                    <strong>Байтовое представление:</strong>
+                    <div class="byte-data" id="byteData">Данные не сохранены</div>
+                    
+                    <div class="file-name" id="fileName">Имя файла: scene.bin</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Хранение объектов сцены
+        let sceneObjects = [];
+        let selectedObjectIndex = -1;
+        
+        // Обновление предпросмотра
+        function updatePreview() {
+            const sceneContainer = document.getElementById('sceneContainer');
+            sceneContainer.innerHTML = '';
+            
+            if (sceneObjects.length === 0) {
+                sceneContainer.innerHTML = '<div class="scene-object" id="defaultObject">Добавьте объекты на сцену</div>';
+                return;
+            }
+            
+            // Создаем элементы для каждого объекта
+            sceneObjects.forEach((obj, index) => {
+                const element = document.createElement('div');
+                element.className = 'scene-object';
+                if (index === selectedObjectIndex) {
+                    element.classList.add('selected');
+                }
+                
+                element.textContent = obj.name;
+                element.style.backgroundColor = obj.color;
+                
+                // Применяем трансформации
+                element.style.transform = `translate3d(${obj.posX * 50 + 200}px, ${obj.posY * 50 + 200}px, 0) 
+                                       scale(${obj.scaleX}, ${obj.scaleY}) 
+                                       rotateX(${obj.rotateX}deg) 
+                                       rotateY(${obj.rotateY}deg) 
+                                       rotateZ(${obj.rotateZ}deg)`;
+                
+                element.style.width = `${50 * obj.scaleX}px`;
+                element.style.height = `${50 * obj.scaleY}px`;
+                
+                // Добавляем обработчик клика для выбора объекта
+                element.addEventListener('click', () => {
+                    selectObject(index);
+                });
+                
+                sceneContainer.appendChild(element);
+            });
+        }
+        
+        // Выбор объекта
+        function selectObject(index) {
+            selectedObjectIndex = index;
+            updateObjectSelector();
+            loadObjectData();
+            updatePreview();
+        }
+        
+        // Загрузка данных объекта в форму
+        function loadObjectData() {
+            if (selectedObjectIndex >= 0 && selectedObjectIndex < sceneObjects.length) {
+                const obj = sceneObjects[selectedObjectIndex];
+                document.getElementById('objectName').value = obj.name;
+                document.getElementById('objectType').value = obj.type;
+                document.getElementById('objectColor').value = obj.color;
+                
+                document.getElementById('posX').value = obj.posX;
+                document.getElementById('posY').value = obj.posY;
+                document.getElementById('posZ').value = obj.posZ;
+                
+                document.getElementById('scaleX').value = obj.scaleX;
+                document.getElementById('scaleY').value = obj.scaleY;
+                document.getElementById('scaleZ').value = obj.scaleZ;
+                
+                document.getElementById('rotateX').value = obj.rotateX;
+                document.getElementById('rotateY').value = obj.rotateY;
+                document.getElementById('rotateZ').value = obj.rotateZ;
+                
+                document.getElementById('objectSelector').value = selectedObjectIndex;
+            }
+        }
+        
+        // Добавление объекта
+        function addObject() {
+            const name = document.getElementById('objectName').value || 'Объект';
+            const type = document.getElementById('objectType').value;
+            const color = document.getElementById('objectColor').value;
+            
+            const posX = parseFloat(document.getElementById('posX').value) || 0;
+            const posY = parseFloat(document.getElementById('posY').value) || 0;
+            const posZ = parseFloat(document.getElementById('posZ').value) || 0;
+            
+            const scaleX = parseFloat(document.getElementById('scaleX').value) || 1;
+            const scaleY = parseFloat(document.getElementById('scaleY').value) || 1;
+            const scaleZ = parseFloat(document.getElementById('scaleZ').value) || 1;
+            
+            const rotateX = parseFloat(document.getElementById('rotateX').value) || 0;
+            const rotateY = parseFloat(document.getElementById('rotateY').value) || 0;
+            const rotateZ = parseFloat(document.getElementById('rotateZ').value) || 0;
+            
+            const newObject = {
+                name,
+                type,
+                color,
+                posX, posY, posZ,
+                scaleX, scaleY, scaleZ,
+                rotateX, rotateY, rotateZ
+            };
+            
+            sceneObjects.push(newObject);
+            selectedObjectIndex = sceneObjects.length - 1;
+            
+            updateObjectSelector();
+            updatePreview();
+            updateObjectsList();
+            
+            alert(`Объект "${name}" добавлен на сцену!`);
+        }
+        
+        // Обновление объекта
+        function updateObject() {
+            if (selectedObjectIndex < 0) {
+                alert('Сначала выберите объект для обновления!');
+                return;
+            }
+            
+            const name = document.getElementById('objectName').value || 'Объект';
+            const type = document.getElementById('objectType').value;
+            const color = document.getElementById('objectColor').value;
+            
+            const posX = parseFloat(document.getElementById('posX').value) || 0;
+            const posY = parseFloat(document.getElementById('posY').value) || 0;
+            const posZ = parseFloat(document.getElementById('posZ').value) || 0;
+            
+            const scaleX = parseFloat(document.getElementById('scaleX').value) || 1;
+            const scaleY = parseFloat(document.getElementById('scaleY').value) || 1;
+            const scaleZ = parseFloat(document.getElementById('scaleZ').value) || 1;
+            
+            const rotateX = parseFloat(document.getElementById('rotateX').value) || 0;
+            const rotateY = parseFloat(document.getElementById('rotateY').value) || 0;
+            const rotateZ = parseFloat(document.getElementById('rotateZ').value) || 0;
+            
+            sceneObjects[selectedObjectIndex] = {
+                name,
+                type,
+                color,
+                posX, posY, posZ,
+                scaleX, scaleY, scaleZ,
+                rotateX, rotateY, rotateZ
+            };
+            
+            updateObjectSelector();
+            updatePreview();
+            updateObjectsList();
+            
+            alert(`Объект "${name}" обновлен!`);
+        }
+        
+        // Удаление объекта
+        function deleteObject() {
+            if (selectedObjectIndex < 0) {
+                alert('Сначала выберите объект для удаления!');
+                return;
+            }
+            
+            const name = sceneObjects[selectedObjectIndex].name;
+            sceneObjects.splice(selectedObjectIndex, 1);
+            
+            if (sceneObjects.length > 0) {
+                selectedObjectIndex = 0;
+                loadObjectData();
+            } else {
+                selectedObjectIndex = -1;
+                clearForm();
+            }
+            
+            updateObjectSelector();
+            updatePreview();
+            updateObjectsList();
+            
+            alert(`Объект "${name}" удален!`);
+        }
+        
+        // Сброс сцены
+        function resetScene() {
+            if (confirm('Вы уверены, что хотите сбросить всю сцену? Все объекты будут удалены.')) {
+                sceneObjects = [];
+                selectedObjectIndex = -1;
+                clearForm();
+                updateObjectSelector();
+                updatePreview();
+                updateObjectsList();
+                alert('Сцена сброшена!');
+            }
+        }
+        
+        // Очистка формы
+        function clearForm() {
+            document.getElementById('objectName').value = 'Объект';
+            document.getElementById('objectType').value = 'cube';
+            document.getElementById('objectColor').value = '#3498db';
+            
+            document.getElementById('posX').value = '0';
+            document.getElementById('posY').value = '0';
+            document.getElementById('posZ').value = '0';
+            
+            document.getElementById('scaleX').value = '1';
+            document.getElementById('scaleY').value = '1';
+            document.getElementById('scaleZ').value = '1';
+            
+            document.getElementById('rotateX').value = '0';
+            document.getElementById('rotateY').value = '0';
+            document.getElementById('rotateZ').value = '0';
+            
+            document.getElementById('objectSelector').value = '-1';
+        }
+        
+        // Обновление списка объектов
+        function updateObjectsList() {
+            const objectsList = document.getElementById('objectsList');
+            objectsList.innerHTML = '';
+            
+            if (sceneObjects.length === 0) {
+                objectsList.innerHTML = '<div class="object-item" style="text-align: center; cursor: default;">Объекты не добавлены</div>';
+                return;
+            }
+            
+            sceneObjects.forEach((obj, index) => {
+                const item = document.createElement('div');
+                item.className = 'object-item';
+                if (index === selectedObjectIndex) {
+                    item.classList.add('selected');
+                }
+                
+                item.innerHTML = `
+                    <span>${obj.name}</span>
+                    <span>${obj.type}</span>
+                `;
+                
+                item.addEventListener('click', () => {
+                    selectObject(index);
+                });
+                
+                objectsList.appendChild(item);
+            });
+        }
+        
+        // Обновление селектора объектов
+        function updateObjectSelector() {
+            const selector = document.getElementById('objectSelector');
+            selector.innerHTML = '<option value="-1">Новый объект</option>';
+            
+            sceneObjects.forEach((obj, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = obj.name;
+                if (index === selectedObjectIndex) {
+                    option.selected = true;
+                }
+                selector.appendChild(option);
+            });
+            
+            selector.value = selectedObjectIndex;
+        }
+        
+        // Обработчик изменения селектора
+        document.getElementById('objectSelector').addEventListener('change', function() {
+            const index = parseInt(this.value);
+            if (index >= 0) {
+                selectObject(index);
+            } else {
+                selectedObjectIndex = -1;
+                clearForm();
+                updatePreview();
+            }
+        });
+        
+        // Функция для преобразования числа в массив байтов (Big Endian)
+        function numberToBytes(num, byteLength) {
+            const buffer = new ArrayBuffer(byteLength);
+            const view = new DataView(buffer);
+            
+            if (byteLength === 4) {
+                view.setFloat32(0, num, false); // false для Big Endian
+            } else if (byteLength === 2) {
+                view.setInt16(0, num, false); // false для Big Endian
+            }
+            
+            return new Uint8Array(buffer);
+        }
+        
+        // Функция для преобразования строки в байты
+        function stringToBytes(str) {
+            const encoder = new TextEncoder();
+            return encoder.encode(str);
+        }
+        
+        // Функция для сохранения данных
+        function saveData() {
+            if (sceneObjects.length === 0) {
+                alert('Нет объектов для сохранения!');
+                return new Uint8Array();
+            }
+            
+            // Сначала записываем количество объектов (2 байта)
+            const objectCountBytes = numberToBytes(sceneObjects.length, 2);
+            
+            // Создаем массив для всех байтов
+            let allBytes = [];
+            allBytes = allBytes.concat(Array.from(objectCountBytes));
+            
+            // Для каждого объекта сохраняем данные
+            sceneObjects.forEach(obj => {
+                // Длина имени (2 байта)
+                const nameBytes = stringToBytes(obj.name);
+                const nameLengthBytes = numberToBytes(nameBytes.length, 2);
+                allBytes = allBytes.concat(Array.from(nameLengthBytes));
+                
+                // Имя объекта
+                allBytes = allBytes.concat(Array.from(nameBytes));
+                
+                // Позиция (3 значения по 4 байта)
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.posX, 4)));
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.posY, 4)));
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.posZ, 4)));
+                
+                // Масштаб (3 значения по 4 байта)
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.scaleX, 4)));
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.scaleY, 4)));
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.scaleZ, 4)));
+                
+                // Вращение (3 значения по 4 байта)
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.rotateX, 4)));
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.rotateY, 4)));
+                allBytes = allBytes.concat(Array.from(numberToBytes(obj.rotateZ, 4)));
+            });
+            
+            return new Uint8Array(allBytes);
+        }
+        
+        // Функция для скачивания бинарного файла
+        function downloadBinary() {
+            if (sceneObjects.length === 0) {
+                alert('Нет объектов для сохранения! Сначала добавьте объекты на сцену.');
+                return;
+            }
+            
+            const byteArray = saveData();
+            const sceneName = prompt('Введите имя сцены:', 'моя_сцена') || 'scene';
+            
+            const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${sceneName}.bin`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Показываем байтовое представление
+            showByteData(byteArray);
+            document.getElementById('fileName').textContent = `Имя файла: ${sceneName}.bin`;
+            
+            alert(`Бинарный файл ${sceneName}.bin успешно скачан!`);
+        }
+        
+        // Функция для отображения байтовых данных
+        function showByteData(byteArray) {
+            const byteDataElement = document.getElementById('byteData');
+            byteDataElement.innerHTML = '';
+            
+            // Показываем первые 100 байт для удобства отображения
+            const displayBytes = byteArray.slice(0, 100);
+            
+            let content = '';
+            displayBytes.forEach((byte, index) => {
+                content += byte.toString(16).padStart(2, '0') + ' ';
+                if ((index + 1) % 16 === 0) content += '<br>';
+            });
+            
+            if (byteArray.length > 100) {
+                content += `<br>... и еще ${byteArray.length - 100} байт`;
+            }
+            
+            byteDataElement.innerHTML = content;
+        }
+        
+        // Инициализация
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+        
+        // Первоначальное обновление
+        updateObjectsList();
+        updatePreview();
+    </script>
+</body>
+</html>
