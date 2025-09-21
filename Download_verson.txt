@@ -1,1 +1,1 @@
-name: BlazeBolt 0.0.1
+BlazeBolt 0.0.1
