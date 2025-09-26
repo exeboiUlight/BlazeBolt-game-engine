@@ -79,22 +79,55 @@
                                     <span class="dot yellow"></span>
                                     <span class="dot green"></span>
                                 </div>
-                                <span class="window-title">blazebolt_editor.lua</span>
+                                <span class="window-title">script.lua</span>
                             </div>
-                            <div class="code-preview">
-                                <code>
+<div class="code-preview">
+    <div class="code-preview">
+        <pre><code>
 <span class="code-comment">-- Simple BlazeBolt Engine code example</span>
-<span class="code-keyword">function</span> <span class="code-function">OnGameStart</span>()
-    <span class="code-variable">player</span> = GameObject.<span class="code-function">Create</span>(<span class="code-string">"Player"</span>)
-    <span class="code-variable">camera</span> = Camera.<span class="code-function">Follow</span>(player)
-<span class="code-keyword">end</span>
+<span class="code-keyword">local</span> <span class="code-variable">graphics</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.graphics"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">config</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.config"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">input</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.input"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">sound</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.utils"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">scene</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.scene"</span>)
 
-<span class="code-keyword">function</span> <span class="code-function">Update</span>(dt)
-    <span class="code-keyword">if</span> Input.<span class="code-function">GetKey</span>(<span class="code-string">"space"</span>) <span class="code-keyword">then</span>
-        player:<span class="code-function">Jump</span>()
+<span class="code-keyword">local</span> <span class="code-variable">a</span> = graphics.sprite.<span class="code-function">NewSprite</span>(<span class="code-string">"icon.png"</span>)
+
+<span class="code-keyword">local</span> <span class="code-variable">x</span> = <span class="code-number">0</span>
+<span class="code-keyword">local</span> <span class="code-variable">y</span> = <span class="code-number">0</span>
+<span class="code-keyword">local</span> <span class="code-variable">z</span> = <span class="code-number">0</span>
+
+<span class="code-keyword">local</span> <span class="code-variable">speed</span> = <span class="code-number">0.5</span>
+
+<span class="code-keyword">function</span> <span class="code-function">update</span>()
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.W <span class="code-keyword">then</span>
+        <span class="code-variable">z</span> = <span class="code-variable">z</span> + <span class="code-variable">speed</span>
     <span class="code-keyword">end</span>
-<span class="code-keyword">end</span>
-                                </code>
+
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.S <span class="code-keyword">then</span>
+        <span class="code-variable">z</span> = <span class="code-variable">z</span> - <span class="code-variable">speed</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.D <span class="code-keyword">then</span>
+        <span class="code-variable">x</span> = <span class="code-variable">x</span> + <span class="code-variable">speed</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.A <span class="code-keyword">then</span>
+        <span class="code-variable">x</span> = <span class="code-variable">x</span> - <span class="code-variable">speed</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.E <span class="code-keyword">then</span>
+        <span class="code-variable">y</span> = <span class="code-variable">y</span> + <span class="code-variable">speed</span>
+    <span class="code-keyword">end</span>
+
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.Q <span class="code-keyword">then</span>
+        <span class="code-variable">y</span> = <span class="code-variable">y</span> - <span class="code-variable">speed</span>
+    <span class="code-keyword">end</span>
+    
+        graphics.camera.<span class="code-function">SetPos</span>(<span class="code-variable">x</span>, <span class="code-variable">y</span>, <span class="code-variable">z</span>)
+                                <span class="code-keyword">end</span>
+                                    </code></pre>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -116,15 +149,15 @@
                     <p data-i18n="about.description2">Our team consists of talented developers, designers, and testers who are passionate about their work and strive to create products of the highest quality.</p>
                     <div class="about-stats">
                         <div class="stat">
-                            <span class="stat-number">1000+</span>
+                            <span class="stat-number">2+</span>
                             <span class="stat-label" data-i18n="about.developers">Developers</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-number">500+</span>
+                            <span class="stat-number">1+</span>
                             <span class="stat-label" data-i18n="about.games">Games Created</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-number">99%</span>
+                            <span class="stat-number">100%</span>
                             <span class="stat-label" data-i18n="about.satisfied">Satisfied Users</span>
                         </div>
                     </div>
@@ -200,12 +233,12 @@
                 <div class="spec-card">
                     <div class="spec-icon">🎮</div>
                     <h3 data-i18n="specs.gpu">Graphics Card</h3>
-                    <p data-i18n="specs.gpuDesc">NVIDIA GeForce GTX 1070 or better</p>
+                    <p data-i18n="specs.gpuDesc">видео карта > MSI GeForce GTX 780</p>
                 </div>
                 <div class="spec-card">
                     <div class="spec-icon">💻</div>
                     <h3 data-i18n="specs.os">Operating System</h3>
-                    <p data-i18n="specs.osDesc">Windows 10, Linux or macOS</p>
+                    <p data-i18n="specs.osDesc">Windows 10, Linux</p>
                 </div>
             </div>
         </div>
@@ -223,9 +256,9 @@
                         <i class="fab fa-windows"></i>
                     </div>
                     <h3 data-i18n="download.windows">Windows Version</h3>
-                    <p class="version" data-i18n="download.build">Build 0.0.1</p>
+                    <p class="version" data-i18n="download.build">Build 0.0.2</p>
                     <p class="file-size" data-i18n="download.size">Size: ~15 MB</p>
-                    <a href="downloads/build 0.0.1 windows.zip" class="btn btn-primary download-btn" download>
+                    <a href="downloads/build 0.0.2 windows.zip" class="btn btn-primary download-btn" download>
                         <i class="fas fa-download"></i> <span data-i18n="download.button">Download</span>
                     </a>
                 </div>
@@ -234,9 +267,9 @@
                         <i class="fab fa-linux"></i>
                     </div>
                     <h3 data-i18n="download.linux">Linux Version</h3>
-                    <p class="version" data-i18n="download.build">Build 0.0.1</p>
+                    <p class="version" data-i18n="download.build">Build 0.0.2</p>
                     <p class="file-size" data-i18n="download.size">Size: ~15 MB</p>
-                    <a href="downloads/build 0.0.1 linux.zip" class="btn btn-primary download-btn" download>
+                    <a href="downloads/build 0.0.2 linux.zip" class="btn btn-primary download-btn" download>
                         <i class="fas fa-download"></i> <span data-i18n="download.button">Download</span>
                     </a>
                 </div>

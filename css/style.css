@@ -605,6 +605,14 @@ footer {
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.3s; }
 
+.code-preview code {
+    white-space: pre;
+    font-family: 'JetBrains Mono', monospace;
+    display: block;
+}
+
+.code-number { color: #B5CEA8; }
+
 @keyframes fadeIn {
     from {
         opacity: 0;

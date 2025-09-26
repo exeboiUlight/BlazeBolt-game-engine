@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlazeBolt Engine - Documentation</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables for Light Theme */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --text-color: #333333;
+            --text-light: #666666;
+            --bg-color: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Documentation Styles */
+        .doc-header {
+            background: var(--gradient);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .doc-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .doc-nav {
+            background: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .doc-nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .doc-nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .doc-nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .doc-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .doc-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .doc-sidebar ul {
+            list-style: none;
+        }
+
+        .doc-sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-sidebar a {
+            text-decoration: none;
+            color: var(--text-light);
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .doc-sidebar a:hover,
+        .doc-sidebar a.active {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+
+        .doc-main {
+            min-height: 100vh;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 100px;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem 0;
+            color: var(--primary-color);
+        }
+
+        .function-card {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .function-signature {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .function-description {
+            margin-bottom: 1rem;
+        }
+
+        .parameters, .returns {
+            margin-bottom: 1rem;
+        }
+
+        .parameters h4, .returns h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .param-table th, .param-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .param-table th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+        }
+
+        .code-example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-comment { color: #6A9955; }
+        .code-keyword { color: #569CD6; }
+        .code-function { color: #DCDCAA; }
+        .code-variable { color: #9CDCFE; }
+        .code-string { color: #CE9178; }
+        .code-number { color: #B5CEA8; }
+
+        pre {
+            margin: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .doc-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .doc-sidebar {
+                position: static;
+            }
+            
+            .doc-nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Documentation Header -->
+    <header class="doc-header">
+        <div class="container">
+            <h1>BlazeBolt Engine Documentation</h1>
+            <p>Complete API reference for version 0.0.2</p>
+        </div>
+    </header>
+
+    <!-- Documentation Navigation -->
+    <nav class="doc-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#config-module">Config Module</a></li>
+                <li><a href="#graphics-module">Graphics Module</a></li>
+                <li><a href="#input-module">Input Module</a></li>
+                <li><a href="#scene-module">Scene Module</a></li>
+                <li><a href="#utils-module">Utils Module</a></li>
+                <li><a href="#examples">Examples</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="doc-content">
+            <!-- Sidebar -->
+            <aside class="doc-sidebar">
+                <ul>
+                    <li><a href="#getting-started" class="active">Getting Started</a></li>
+                    <li><a href="#quick-start">Quick Start</a></li>
+                    <li><a href="#basic-structure">Basic Structure</a></li>
+                    
+                    <li><a href="#config-module">Config Module</a></li>
+                    <li><a href="#window-config">Window Configuration</a></li>
+                    <li><a href="#window-functions">Window Functions</a></li>
+                    
+                    <li><a href="#graphics-module">Graphics Module</a></li>
+                    <li><a href="#sprite-functions">Sprite Functions</a></li>
+                    <li><a href="#camera-functions">Camera Functions</a></li>
+                    
+                    <li><a href="#input-module">Input Module</a></li>
+                    <li><a href="#keyboard-input">Keyboard Input</a></li>
+                    
+                    <li><a href="#scene-module">Scene Module</a></li>
+                    <li><a href="#scene-functions">Scene Functions</a></li>
+                    
+                    <li><a href="#utils-module">Utils Module</a></li>
+                    <li><a href="#sound-functions">Sound Functions</a></li>
+                    <li><a href="#utility-functions">Utility Functions</a></li>
+                    <li><a href="#time-functions">Time Functions</a></li>
+                    <li><a href="#file-functions">File Functions</a></li>
+                    
+                    <li><a href="#examples">Examples</a></li>
+                    <li><a href="#basic-movement">Basic Movement</a></li>
+                    <li><a href="#sprite-management">Sprite Management</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="doc-main">
+                <!-- Getting Started Section -->
+                <section id="getting-started" class="section">
+                    <h2>Getting Started</h2>
+                    <p>BlazeBolt Engine is a powerful Lua-based game engine designed for creating 2D and 3D games with ease.</p>
+
+                    <div id="quick-start" class="subsection">
+                        <h3>Quick Start</h3>
+                        <p>Here's a basic template to get started with BlazeBolt Engine:</p>
+                        
+                        <div class="code-example">
+                            <pre><code>
+<span class="code-comment">-- main.lua - Basic BlazeBolt Engine template</span>
+<span class="code-keyword">local</span> <span class="code-variable">graphics</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.graphics"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">config</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.config"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">input</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.input"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">utils</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.utils"</span>)
+
+<span class="code-comment">-- Initialize game objects</span>
+<span class="code-keyword">function</span> <span class="code-function">start</span>()
+    <span class="code-comment">-- Your initialization code here</span>
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Update game logic</span>
+<span class="code-keyword">function</span> <span class="code-function">update</span>()
+    <span class="code-comment">-- Your game logic here</span>
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Render game objects</span>
+<span class="code-keyword">function</span> <span class="code-function">render</span>()
+    <span class="code-comment">-- Your rendering code here</span>
+<span class="code-keyword">end</span>
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <div id="basic-structure" class="subsection">
+                        <h3>Basic Structure</h3>
+                        <p>A typical BlazeBolt Engine project has the following structure:</p>
+                        
+                        <div class="code-example">
+                            <pre><code>
+game_project/
+├── script.lua          <span class="code-comment">-- Main game file</span>
+└── BBE/              <span class="code-comment">-- Engine modules (auto-included)</span>
+    ├── graphics.lua
+    ├── config.lua
+    ├── input.lua
+    ├── scene.lua
+    └── utils.lua
+                            </code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Config Module Section -->
+                <section id="config-module" class="section">
+                    <h2>Config Module</h2>
+                    <p>The config module handles window configuration and settings.</p>
+
+                    <div id="window-config" class="subsection">
+                        <h3>Window Configuration</h3>
+                        <p>Default window configuration object:</p>
+                        
+                        <div class="code-example">
+                            <pre><code>
+<span class="code-keyword">local</span> <span class="code-variable">window</span> = {
+    width = 1200,
+    height = 600,
+    title = "Game in Blaze Bolt Engine",
+    icon = "icon.png",
+    background = {100, 100, 100}  <span class="code-comment">-- RGB values</span>
+}
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <div id="window-functions" class="subsection">
+                        <h3>Window Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                window.SetSize(width, height)
+                            </div>
+                            <div class="function-description">
+                                Sets the window dimensions.
+                            </div>
+                            <div class="parameters">
+                                <h4>Parameters</h4>
+                                <table class="param-table">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>width</td>
+                                        <td>number</td>
+                                        <td>Window width in pixels</td>
+                                    </tr>
+                                    <tr>
+                                        <td>height</td>
+                                        <td>number</td>
+                                        <td>Window height in pixels</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                window.SetTitle(title)
+                            </div>
+                            <div class="function-description">
+                                Sets the window title.
+                            </div>
+                            <div class="parameters">
+                                <h4>Parameters</h4>
+                                <table class="param-table">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>title</td>
+                                        <td>string</td>
+                                        <td>Window title text</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                window.SetIcon(icon)
+                            </div>
+                            <div class="function-description">
+                                Sets the window icon.
+                            </div>
+                            <div class="parameters">
+                                <h4>Parameters</h4>
+                                <table class="param-table">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>icon</td>
+                                        <td>string</td>
+                                        <td>Path to icon image file</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                window.SetBackground(rgb)
+                            </div>
+                            <div class="function-description">
+                                Sets the window background color.
+                            </div>
+                            <div class="parameters">
+                                <h4>Parameters</h4>
+                                <table class="param-table">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>rgb</td>
+                                        <td>table</td>
+                                        <td>RGB color values {red, green, blue}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Graphics Module Section -->
+                <section id="graphics-module" class="section">
+                    <h2>Graphics Module</h2>
+                    <p>The graphics module handles rendering, sprites, and camera operations.</p>
+
+                    <div id="sprite-functions" class="subsection">
+                        <h3>Sprite Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.sprite.NewSprite(texture) → number
+                            </div>
+                            <div class="function-description">
+                                Creates a new sprite and returns its object ID.
+                            </div>
+                            <div class="parameters">
+                                <h4>Parameters</h4>
+                                <table class="param-table">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>texture</td>
+                                        <td>string</td>
+                                        <td>Path to texture image file</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="returns">
+                                <h4>Returns</h4>
+                                <p>number - Object ID for the created sprite</p>
+                            </div>
+                            <div class="code-example">
+                                <pre><code>
+<span class="code-comment">-- Example usage</span>
+<span class="code-keyword">local</span> <span class="code-variable">spriteId</span> = graphics.sprite.<span class="code-function">NewSprite</span>(<span class="code-string">"player.png"</span>)
+                                </code></pre>
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.sprite.SetPos(object, pos)
+                            </div>
+                            <div class="function-description">
+                                Sets the position of a sprite object.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.sprite.SetScale(object, scale)
+                            </div>
+                            <div class="function-description">
+                                Sets the scale of a sprite object.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.sprite.SetRotate(object, rotate)
+                            </div>
+                            <div class="function-description">
+                                Sets the rotation of a sprite object.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.sprite.SetColor(object, color)
+                            </div>
+                            <div class="function-description">
+                                Sets the color tint of a sprite object.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="camera-functions" class="subsection">
+                        <h3>Camera Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.camera.SetPos(x, y, z)
+                            </div>
+                            <div class="function-description">
+                                Sets the camera position in 3D space.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.camera.SetRotate(x, y, z)
+                            </div>
+                            <div class="function-description">
+                                Sets the camera rotation.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.camera.Move(x, y, z)
+                            </div>
+                            <div class="function-description">
+                                Moves the camera by the specified offsets.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                graphics.camera.Rotate(x, y, z)
+                            </div>
+                            <div class="function-description">
+                                Rotates the camera by the specified angles.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Input Module Section -->
+                <section id="input-module" class="section">
+                    <h2>Input Module</h2>
+                    <p>The input module handles keyboard input detection.</p>
+
+                    <div id="keyboard-input" class="subsection">
+                        <h3>Keyboard Input</h3>
+                        <p>Keyboard keys are accessed through the <code>input.keys</code> table:</p>
+                        
+                        <div class="code-example">
+                            <pre><code>
+<span class="code-comment">-- Check if W key is pressed</span>
+<span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.W <span class="code-keyword">then</span>
+    <span class="code-comment">-- Move forward</span>
+<span class="code-keyword">end</span>
+
+<span class="code-comment">-- Check if Space key is pressed</span>
+<span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.SPACE <span class="code-keyword">then</span>
+    <span class="code-comment">-- Jump action</span>
+<span class="code-keyword">end</span>
+                            </code></pre>
+                        </div>
+
+                        <div class="note">
+                            <strong>Note:</strong> All key states are boolean values (true when pressed, false when released).
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Scene Module Section -->
+                <section id="scene-module" class="section">
+                    <h2>Scene Module</h2>
+                    <p>The scene module handles loading and managing game scenes.</p>
+
+                    <div id="scene-functions" class="subsection">
+                        <h3>Scene Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                scene.LoadScene(filename) → table
+                            </div>
+                            <div class="function-description">
+                                Loads a scene from a binary file and returns scene data.
+                            </div>
+                            <div class="parameters">
+                                <h4>Parameters</h4>
+                                <table class="param-table">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>filename</td>
+                                        <td>string</td>
+                                        <td>Path to scene file</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="returns">
+                                <h4>Returns</h4>
+                                <p>table - Scene data containing objects and metadata</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Utils Module Section -->
+                <section id="utils-module" class="section">
+                    <h2>Utils Module</h2>
+                    <p>The utils module provides utility functions for sound, time, files, and general operations.</p>
+
+                    <div id="sound-functions" class="subsection">
+                        <h3>Sound Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.sound_load(filename, name)
+                            </div>
+                            <div class="function-description">
+                                Loads a sound file and assigns it a name.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.sound_play(name)
+                            </div>
+                            <div class="function-description">
+                                Plays a loaded sound.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.sound_create_source(name, looping, volume, pitch)
+                            </div>
+                            <div class="function-description">
+                                Creates a sound source with specified properties.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="utility-functions" class="subsection">
+                        <h3>Utility Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.quit()
+                            </div>
+                            <div class="function-description">
+                                Exits the game application.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.vector3(x, y, z) → table
+                            </div>
+                            <div class="function-description">
+                                Creates a 3D vector.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.distance(vec1, vec2) → number
+                            </div>
+                            <div class="function-description">
+                                Calculates distance between two 3D vectors.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="time-functions" class="subsection">
+                        <h3>Time Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.time.get_delta_time() → number
+                            </div>
+                            <div class="function-description">
+                                Returns the time elapsed since the last frame.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.time.get_total_time() → number
+                            </div>
+                            <div class="function-description">
+                                Returns the total time since the game started.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="file-functions" class="subsection">
+                        <h3>File Functions</h3>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.file_exists(filename) → boolean
+                            </div>
+                            <div class="function-description">
+                                Checks if a file exists.
+                            </div>
+                        </div>
+
+                        <div class="function-card">
+                            <div class="function-signature">
+                                utils.read_file(filename) → string
+                            </div>
+                            <div class="function-description">
+                                Reads the entire contents of a file.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Examples Section -->
+                <section id="examples" class="section">
+                    <h2>Examples</h2>
+                    <p>Practical examples demonstrating BlazeBolt Engine usage.</p>
+
+                    <div id="basic-movement" class="subsection">
+                        <h3>Basic Movement Example</h3>
+                        <p>This example shows how to create a simple camera movement system:</p>
+                        
+                        <div class="code-example">
+                            <pre><code>
+<span class="code-comment">-- Basic camera movement example</span>
+<span class="code-keyword">local</span> <span class="code-variable">graphics</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.graphics"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">input</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.input"</span>)
+<span class="code-keyword">local</span> <span class="code-variable">utils</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.utils"</span>)
+
+<span class="code-keyword">local</span> <span class="code-variable">cameraPos</span> = {x = 0, y = 0, z = 0}
+<span class="code-keyword">local</span> <span class="code-variable">moveSpeed</span> = 5.0
+
+<span class="code-keyword">function</span> <span class="code-function">update</span>()
+    <span class="code-keyword">local</span> <span class="code-variable">dt</span> = utils.time.get_delta_time()
+    
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.W <span class="code-keyword">then</span>
+        cameraPos.z = cameraPos.z + moveSpeed * dt
+    <span class="code-keyword">end</span>
+    
+    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.S <span class="code-keyword">then</span>
+        cameraPos.z = cameraPos.z - moveSpeed * dt
+    <span class="code-keyword">end</span>
+    
+    <span class="code-comment">-- Update camera position</span>
+    graphics.camera.<span class="code-function">SetPos</span>(cameraPos.x, cameraPos.y, cameraPos.z)
+<span class="code-keyword">end</span>
+                            </code></pre>
+                        </div>
+                    </div>
+
+                    <div id="sprite-management" class="subsection">
+                        <h3>Sprite Management Example</h3>
+                        <p>This example demonstrates sprite creation and manipulation:</p>
+                        
+                        <div class="code-example">
+                            <pre><code>
+<span class="code-comment">-- Sprite management example</span>
+<span class="code-keyword">local</span> <span class="code-variable">graphics</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.graphics"</span>)
+
+<span class="code-keyword">local</span> <span class="code-variable">playerSprite</span>
+<span class="code-keyword">local</span> <span class="code-variable">enemySprites</span> = {}
+
+<span class="code-keyword">function</span> <span class="code-function">start</span>()
+    <span class="code-comment">-- Create player sprite</span>
+    playerSprite = graphics.sprite.<span class="code-function">NewSprite</span>(<span class="code-string">"player.png"</span>)
+    graphics.sprite.<span class="code-function">SetPos</span>(playerSprite, {0, 0, 0})
+    graphics.sprite.<span class="code-function">SetScale</span>(playerSprite, {1, 1, 1})
+    
+    <span class="code-comment">-- Create enemy sprites</span>
+    <span class="code-keyword">for</span> <span class="code-variable">i</span> = 1, 5 <span class="code-keyword">do</span>
+        <span class="code-keyword">local</span> <span class="code-variable">enemy</span> = graphics.sprite.<span class="code-function">NewSprite</span>(<span class="code-string">"enemy.png"</span>)
+        graphics.sprite.<span class="code-function">SetPos</span>(enemy, {i * 2, 0, -5})
+        table.insert(enemySprites, enemy)
+    <span class="code-keyword">end</span>
+<span class="code-keyword">end</span>
+                            </code></pre>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Update active sidebar link
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.doc-sidebar a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
