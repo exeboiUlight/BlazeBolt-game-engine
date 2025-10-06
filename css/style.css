@@ -92,7 +92,7 @@ body {
     height: 120%;
     background: 
         linear-gradient(rgba(12, 12, 12, 0.85), rgba(12, 12, 12, 0.95)),
-        url('/images/screen1.png') center/cover no-repeat;
+        url('https://github.com/exeboiUlight/BlazeBolt-game-engine/blob/main/images/screen1.png') center/cover no-repeat;
     z-index: -1;
     transform: translateZ(0);
     will-change: transform;
@@ -101,7 +101,7 @@ body {
 [data-theme="light"] .parallax-bg {
     background: 
         linear-gradient(rgba(245, 245, 245, 0.85), rgba(245, 245, 245, 0.95)),
-        url('/images/screen1.png') center/cover no-repeat;
+        url('https://github.com/exeboiUlight/BlazeBolt-game-engine/blob/main/images/screen1.png') center/cover no-repeat;
 }
 
 /* Создаем псевдоэлемент для второго фона */
@@ -114,7 +114,7 @@ body {
     height: 100%;
     background: 
         linear-gradient(rgba(12, 12, 12, 0.85), rgba(12, 12, 12, 0.95)),
-        url('/images/screen2.png') center/cover no-repeat;
+        url('https://github.com/exeboiUlight/BlazeBolt-game-engine/blob/main/images/screen2.png') center/cover no-repeat;
     opacity: 0;
     z-index: -1;
     transition: opacity 2s ease-in-out;
@@ -123,7 +123,7 @@ body {
 [data-theme="light"] .parallax-bg::before {
     background: 
         linear-gradient(rgba(245, 245, 245, 0.85), rgba(245, 245, 245, 0.95)),
-        url('/images/screen2.png') center/cover no-repeat;
+        url('https://github.com/exeboiUlight/BlazeBolt-game-engine/blob/main/images/screen2.png') center/cover no-repeat;
 }
 
 .parallax-bg.second-bg-active::before {
