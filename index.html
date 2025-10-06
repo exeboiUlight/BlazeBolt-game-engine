@@ -1,309 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BlazeBolt Engine - powerful Lua game engine for creating amazing game worlds. Download for free and start developing today!">
-    <meta name="keywords" content="BlazeBolt Engine, game engine, Lua, game development, BloodBath Software">
-    <meta name="author" content="BloodBath Software">
-    
-    <title>BlazeBolt Engine - Powerful Lua Game Engine | BloodBath Software</title>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="icon" href="images/icon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css">
+    <title>BlazeBolt game engine - делай игры легко</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/creaters.css">
+    <link rel="stylesheet" href="/css/info.css">
 </head>
 <body>
-    <!-- Particles Background -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Theme Switcher -->
-    <div class="theme-switcher">
-        <button class="theme-btn" data-theme="dark" title="Dark theme"><i class="fas fa-moon"></i></button>
-        <button class="theme-btn active" data-theme="light" title="Light theme"><i class="fas fa-sun"></i></button>
-        <button class="theme-btn" data-theme="console" title="Console theme"><i class="fas fa-terminal"></i></button>
+    <!-- Панель управления темами и языком -->
+    <div class="control-panel">
+        <div class="theme-switcher">
+            <button id="themeToggle" class="theme-btn" title="Переключить тему">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+        <div class="language-switcher">
+            <button id="langToggle" class="lang-btn" title="Switch language">
+                <span class="lang-text">EN</span>
+            </button>
+        </div>
     </div>
 
-    <header id="header">
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <img src="images/logo studio.png" alt="BloodBath Software Logo">
-                    <span class="logo-text">BlazeBolt Engine</span>
-                </div>
-                <div class="nav-links" id="navLinks">
-                    <a href="#home" data-i18n="nav.home">Home</a>
-                    <a href="#about" data-i18n="nav.about">About</a>
-                    <a href="#features" data-i18n="nav.features">Features</a>
-                    <a href="#specs" data-i18n="nav.specs">Requirements</a>
-                    <a href="#download" data-i18n="nav.download">Download</a>
-                    <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
-                </div>
-                <div class="header-controls">
-                    <button class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-sun"></i>
-                    </button>
-                    <button class="lang-toggle" id="langToggle">🇷🇺 RU</button>
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </nav>
+    <div class="center-block">
+        <div class="parallax-bg"></div>
+        <h1 data-i18n="title">BlazeBolt game engine</h1>
+        <h3 data-i18n="subtitle">это иновацтоный движок для простого прототипирования и разработки видео игр</h3>
+        <a href="/downloads/build 0.0.2 windows.zip" class="download-btn" data-i18n="download">Скачать</a>
+    </div>
+
+    <div class="creaters">
+        <h1 data-i18n="creators">Создатели</h1>
+        <div class="creater-card">
+            <span class="role" data-i18n="role1">Автор идеи и главный программист</span>
+            <h3>ExeBoi</h3>
         </div>
-    </header>
+        <div class="creater-card">
+            <span class="role" data-i18n="role2">иногда помогает с кодом</span>
+            <h3>OxygenSE</h3>
+        </div>
+    </div>
 
-    <section class="hero section" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="animate float-up">BlazeBolt <span class="gradient-text" data-i18n="hero.engine">Engine</span></h1>
-                    <p class="animate float-up delay-1" data-i18n="hero.subtitle">Powerful Lua game engine for creating amazing game worlds with incredible performance</p>
-                    <div class="hero-buttons animate float-up delay-2">
-                        <a href="#download" class="btn btn-primary">
-                            <i class="fas fa-download"></i> <span data-i18n="hero.button">Start Developing</span>
-                        </a>
-                        <a href="#features" class="btn btn-secondary">
-                            <i class="fas fa-play-circle"></i> Learn More
-                        </a>
-                    </div>
-                </div>
-                <div class="hero-image animate float-up delay-3">
-                    <div class="engine-preview">
-                        <div class="preview-window">
-                            <div class="window-header">
-                                <div class="window-dots">
-                                    <span class="dot red"></span>
-                                    <span class="dot yellow"></span>
-                                    <span class="dot green"></span>
-                                </div>
-                                <span class="window-title">script.lua</span>
-                            </div>
-<div class="code-preview">
-    <div class="code-preview">
-        <pre><code>
-<span class="code-comment">-- Simple BlazeBolt Engine code example</span>
-<span class="code-keyword">local</span> <span class="code-variable">graphics</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.graphics"</span>)
-<span class="code-keyword">local</span> <span class="code-variable">config</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.config"</span>)
-<span class="code-keyword">local</span> <span class="code-variable">input</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.input"</span>)
-<span class="code-keyword">local</span> <span class="code-variable">sound</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.utils"</span>)
-<span class="code-keyword">local</span> <span class="code-variable">scene</span> = <span class="code-function">require</span>(<span class="code-string">"BBE.scene"</span>)
-
-<span class="code-keyword">local</span> <span class="code-variable">a</span> = graphics.sprite.<span class="code-function">NewSprite</span>(<span class="code-string">"icon.png"</span>)
-
-<span class="code-keyword">local</span> <span class="code-variable">x</span> = <span class="code-number">0</span>
-<span class="code-keyword">local</span> <span class="code-variable">y</span> = <span class="code-number">0</span>
-<span class="code-keyword">local</span> <span class="code-variable">z</span> = <span class="code-number">0</span>
-
-<span class="code-keyword">local</span> <span class="code-variable">speed</span> = <span class="code-number">0.5</span>
-
-<span class="code-keyword">function</span> <span class="code-function">update</span>()
-    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.W <span class="code-keyword">then</span>
-        <span class="code-variable">z</span> = <span class="code-variable">z</span> + <span class="code-variable">speed</span>
-    <span class="code-keyword">end</span>
-
-    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.S <span class="code-keyword">then</span>
-        <span class="code-variable">z</span> = <span class="code-variable">z</span> - <span class="code-variable">speed</span>
-    <span class="code-keyword">end</span>
-
-    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.D <span class="code-keyword">then</span>
-        <span class="code-variable">x</span> = <span class="code-variable">x</span> + <span class="code-variable">speed</span>
-    <span class="code-keyword">end</span>
-
-    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.A <span class="code-keyword">then</span>
-        <span class="code-variable">x</span> = <span class="code-variable">x</span> - <span class="code-variable">speed</span>
-    <span class="code-keyword">end</span>
-
-    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.E <span class="code-keyword">then</span>
-        <span class="code-variable">y</span> = <span class="code-variable">y</span> + <span class="code-variable">speed</span>
-    <span class="code-keyword">end</span>
-
-    <span class="code-keyword">if</span> <span class="code-variable">input</span>.keys.Q <span class="code-keyword">then</span>
-        <span class="code-variable">y</span> = <span class="code-variable">y</span> - <span class="code-variable">speed</span>
-    <span class="code-keyword">end</span>
-    
-        graphics.camera.<span class="code-function">SetPos</span>(<span class="code-variable">x</span>, <span class="code-variable">y</span>, <span class="code-variable">z</span>)
-                                <span class="code-keyword">end</span>
-                                    </code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="info">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+        </div>
+        <div class="text">
+            <h3 data-i18n="title">BlazeBolt game engine</h3>
+            <h4 data-i18n="startDate">Разработка была начата 14.09.2025</h4>
+            <h4 data-i18n="devInfo">Разрабатывается в основном одним человеком</h4>
+        </div>
+        <div class="pluses">
+            <h3 data-i18n="advantages">Плюсы</h3>
+            <div class="plus-item">
+                <span class="plus-icon">🔄</span>
+                <h4 data-i18n="advantage1">Частые обновления</h4>
+            </div>
+            <div class="plus-item">
+                <span class="plus-icon">📁</span>
+                <h4 data-i18n="advantage2">Множество шаблонов</h4>
+            </div>
+            <div class="plus-item">
+                <span class="plus-icon">⭐</span>
+                <h4 data-i18n="advantage3">Работа над качеством</h4>
+            </div>
+            <div class="plus-item">
+                <span class="plus-icon">📊</span>
+                <h4 data-i18n="advantage4">Нормальный менаджмент для разработки</h4>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section class="about section" id="about">
-        <div class="container">
-            <div class="section-header animate fade-in">
-                <h2 data-i18n="about.title">About BlazeBolt Engine</h2>
-                <p data-i18n="about.subtitle">Modern engine for modern developers</p>
-            </div>
-            <div class="about-content animate fade-in delay-1">
-                <div class="about-text">
-                    <h3 data-i18n="about.company">BloodBath Software</h3>
-                    <p data-i18n="about.description1">We are a software and video game development studio. Our studio was founded in 2025 with the goal of creating innovative solutions for the gaming industry.</p>
-                    <p data-i18n="about.description2">Our team consists of talented developers, designers, and testers who are passionate about their work and strive to create products of the highest quality.</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <span class="stat-number">2+</span>
-                            <span class="stat-label" data-i18n="about.developers">Developers</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">1+</span>
-                            <span class="stat-label" data-i18n="about.games">Games Created</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">100%</span>
-                            <span class="stat-label" data-i18n="about.satisfied">Satisfied Users</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-image">
-                    <img src="images/logo studio.png" alt="BloodBath Software" class="studio-logo">
-                    <div class="floating-elements">
-                        <div class="floating-element element-1">🚀</div>
-                        <div class="floating-element element-2">⚡</div>
-                        <div class="floating-element element-3">🎮</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="features section" id="features">
-        <div class="container">
-            <div class="section-header animate fade-in">
-                <h2 data-i18n="features.title">Engine Features</h2>
-                <p data-i18n="features.subtitle">Everything you need to create amazing games</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card animate fade-in delay-1">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 data-i18n="features.performance">High Performance</h3>
-                    <p data-i18n="features.performanceDesc">Optimized core ensures smooth gameplay even on mid-range systems</p>
-                </div>
-                <div class="feature-card animate fade-in delay-2">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3 data-i18n="features.flexibility">Lua Flexibility</h3>
-                    <p data-i18n="features.flexibilityDesc">Using Lua allows easy customization and functionality extension</p>
-                </div>
-                <div class="feature-card animate fade-in delay-3">
-                    <div class="feature-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h3 data-i18n="features.crossplatform">Cross-Platform</h3>
-                    <p data-i18n="features.crossplatformDesc">Create games for Windows, Linux, macOS and even mobile platforms</p>
-                </div>
-                <div class="feature-card animate fade-in delay-1">
-                    <div class="feature-icon">
-                        <i class="fas fa-edit"></i>
-                    </div>
-                    <h3 data-i18n="features.editor">Powerful Editor</h3>
-                    <p data-i18n="features.editorDesc">Built-in editor with intuitive interface for rapid development</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="specs section" id="specs">
-        <div class="container">
-            <div class="section-header animate fade-in">
-                <h2 data-i18n="specs.title">System Requirements</h2>
-                <p data-i18n="specs.subtitle">Minimum requirements to work with the engine</p>
-            </div>
-            <div class="specs-grid animate fade-in delay-1">
-                <div class="spec-card">
-                    <div class="spec-icon">💾</div>
-                    <h3 data-i18n="specs.hdd">Hard Drive</h3>
-                    <p data-i18n="specs.hddDesc">Minimum 10 MB free space</p>
-                </div>
-                <div class="spec-card">
-                    <div class="spec-icon">⚙️</div>
-                    <h3 data-i18n="specs.cpu">Processor</h3>
-                    <p data-i18n="specs.cpuDesc">Intel Core i7-2600 or equivalent</p>
-                </div>
-                <div class="spec-card">
-                    <div class="spec-icon">🎮</div>
-                    <h3 data-i18n="specs.gpu">Graphics Card</h3>
-                    <p data-i18n="specs.gpuDesc">видео карта > MSI GeForce GTX 780</p>
-                </div>
-                <div class="spec-card">
-                    <div class="spec-icon">💻</div>
-                    <h3 data-i18n="specs.os">Operating System</h3>
-                    <p data-i18n="specs.osDesc">Windows 10, Linux</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="download section" id="download">
-        <div class="container">
-            <div class="section-header animate fade-in">
-                <h2 data-i18n="download.title">Download BlazeBolt Engine</h2>
-                <p data-i18n="download.subtitle">Choose version for your operating system</p>
-            </div>
-            <div class="download-grid animate fade-in delay-1">
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fab fa-windows"></i>
-                    </div>
-                    <h3 data-i18n="download.windows">Windows Version</h3>
-                    <p class="version" data-i18n="download.build">Build 0.0.2</p>
-                    <p class="file-size" data-i18n="download.size">Size: ~15 MB</p>
-                    <a href="downloads/build 0.0.2 windows.zip" class="btn btn-primary download-btn" download>
-                        <i class="fas fa-download"></i> <span data-i18n="download.button">Download</span>
-                    </a>
-                </div>
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fab fa-linux"></i>
-                    </div>
-                    <h3 data-i18n="download.linux">Linux Version</h3>
-                    <p class="version" data-i18n="download.build">Build 0.0.2</p>
-                    <p class="file-size" data-i18n="download.size">Size: ~15 MB</p>
-                    <a href="downloads/build 0.0.2 linux.zip" class="btn btn-primary download-btn" download>
-                        <i class="fas fa-download"></i> <span data-i18n="download.button">Download</span>
-                    </a>
-                </div>
-            </div>
-            <div class="download-info animate fade-in delay-2">
-                <p><i class="fas fa-info-circle"></i> <span data-i18n="download.note">The engine is completely free for non-commercial use.</span></p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <img src="images/logo studio.png" alt="BloodBath Software Logo">
-                    <div class="logo-text">BloodBath Software</div>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>BlazeBolt Engine</h4>
-                        <a href="#about" data-i18n="nav.about">About</a>
-                        <a href="#features" data-i18n="nav.features">Features</a>
-                        <a href="#download" data-i18n="nav.download">Download</a>
-                        <a href="#specs" data-i18n="nav.specs">Requirements</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 BloodBath Software. <span data-i18n="footer.rights">All rights reserved.</span></p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/locales.js"></script>
-    <script src="js/script.js"></script>
+    <script src="script/main.js"></script>
+    <script src="script/localization.js"></script>
+    <script src="script/theme.js"></script>
 </body>
 </html>
