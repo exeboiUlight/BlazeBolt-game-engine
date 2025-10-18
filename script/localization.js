@@ -5,7 +5,7 @@ class LocalizationManager {
         this.translations = {
             'ru': {
                 'title': 'BlazeBolt game engine',
-                'subtitle': 'это иновационный движок для простого прототипирования и разработки видео игр',
+                'subtitle': 'это простой движок для простого прототипирования и разработки видео игр',
                 'download': 'Скачать',
                 'creators': 'Создатели',
                 'role1': 'Автор идеи и главный программист',
@@ -20,7 +20,7 @@ class LocalizationManager {
             },
             'en': {
                 'title': 'BlazeBolt Game Engine',
-                'subtitle': 'is an innovative engine for easy prototyping and video game development',
+                'subtitle': 'is an easy engine for easy prototyping and video game development',
                 'download': 'Download',
                 'creators': 'Creators',
                 'role1': 'Author of the idea and lead programmer',

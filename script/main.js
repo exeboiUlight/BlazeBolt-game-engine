@@ -30,29 +30,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initSmoothBackgroundTransition() {
-    const parallaxBg = document.querySelector('.parallax-bg');
-    let isSecondBackground = false;
+    const backgrounds = document.querySelectorAll('.parallax-bg');
+    let currentIndex = 0;
     
     function switchBackground() {
-        if (isSecondBackground) {
-            // Плавно переключаем на первый фон
-            parallaxBg.classList.remove('second-bg-active');
-        } else {
-            // Плавно переключаем на второй фон
-            parallaxBg.classList.add('second-bg-active');
-        }
+        // Скрываем текущий активный фон
+        backgrounds[currentIndex].classList.remove('active');
         
-        isSecondBackground = !isSecondBackground;
+        // Переходим к следующему фону
+        currentIndex = (currentIndex + 1) % backgrounds.length;
+        
+        // Показываем следующий фон
+        backgrounds[currentIndex].classList.add('active');
     }
     
-    // Начинаем смену фонов через 5 секунд после загрузки
+    // Начинаем смену фонов
     setTimeout(() => {
-        // Первый переход
         switchBackground();
-        
-        // Устанавливаем интервал для последующих переходов
-        setInterval(switchBackground, 60000); // Смена каждые 8 секунд
-    }, 60000);
+        setInterval(switchBackground, 8000);
+    }, 8000);
 }
 
 function createFloatingParticles() {

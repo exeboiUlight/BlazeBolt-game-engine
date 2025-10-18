@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/creaters.css">
     <link rel="stylesheet" href="./css/info.css">
+    <link rel="preload" href="./images/screen2.png" as="image">
 </head>
 <body>
     <!-- Панель управления темами и языком -->
@@ -25,10 +26,13 @@
     </div>
 
     <div class="center-block">
-        <div class="parallax-bg"></div>
+        <div class="parallax-container">
+            <img class="parallax-bg active" src="./images/screen1.png" alt="Background 1">
+            <img class="parallax-bg" src="./images/screen2.png" alt="Background 2">
+        </div>
         <h1 data-i18n="title">BlazeBolt game engine</h1>
-        <h3 data-i18n="subtitle">это иновацтоный движок для простого прототипирования и разработки видео игр</h3>
-        <a href="./downloads/build 0.0.2 windows.zip" class="download-btn" data-i18n="download">Скачать</a>
+        <h3 data-i18n="subtitle">это простой движок для простого прототипирования и разработки видео игр</h3>
+        <a href="./downloads/beta 0.0.3 windows.zip" class="download-btn" data-i18n="download">Скачать</a>
     </div>
 
     <div class="creaters">
