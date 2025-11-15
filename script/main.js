@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Управление плавной сменой фона
     initSmoothBackgroundTransition();
+    
+    // Плавный переход для ссылок скачивания
+    setupSmoothTransitions();
 });
 
 function initSmoothBackgroundTransition() {
@@ -103,4 +106,21 @@ function animateParticle(particle) {
     }
     
     move();
+}
+
+// Плавные переходы для ссылок
+function setupSmoothTransitions() {
+    const downloadLinks = document.querySelectorAll('a[href*="versions.html"]');
+    
+    downloadLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Добавляем эффект нажатия
+            this.style.transform = 'scale(0.95)';
+            
+            // Небольшая задержка для анимации
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
 }
